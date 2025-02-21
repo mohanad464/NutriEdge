@@ -29,12 +29,12 @@ function buyNow(price_id: string) {
   };
 
   return (
-    <Button
+    <Button variant={"secondary"}
       onClick={() => {
         buyNow(product.price_id);
       }}
     >
-      AddToCart
+      Buy Now
     </Button>
   );
 }

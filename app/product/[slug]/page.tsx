@@ -1,4 +1,5 @@
 import AddToCart from "@/app/components/AddToCart";
+import Checkout from "@/app/components/Checkout";
 import ImageGallery from "@/app/components/imageGallery";
 import { fullProduct } from "@/app/interface";
 import { client } from "@/app/lib/sanity";
@@ -82,7 +83,15 @@ export default async function ProductPage({
               key={data._id}
               price_id={data.price_id}
             />
-            <Button variant={"secondary"}>Buy Now</Button>
+            <Checkout
+              currency="EGP"
+              name={data.name}
+              price={data.price}
+              description={data.description}
+              image={data.images[0]}
+              key={data._id}
+              price_id={data.price_id}
+            />
           </div>
 
           <p className="mt-12 text-base text-gray-500 tracking-wide">
