@@ -13,21 +13,25 @@ async function getData(category: string) {
     "slug": slug.current,
     "categoryName": category->name
   }`;
-  const data = await client.fetch(query);
-  return data;
+  return await client.fetch(query);
 }
 
 export default async function CategoryPage({
   params,
 }: {
-  params?: { category?: string }; // Making params optional to avoid runtime errors
+  params: { category: string };
 }) {
-  // Ensure params exist and category is a valid string
   if (!params?.category) {
-    throw new Error("Invalid category parameter");
+    return <div className="text-red-500">Error: Invalid category.</div>;
   }
 
-  const data: simplifiedProduct[] = await getData(params.category);
+  let data: simplifiedProduct[] = [];
+
+  try {
+    data = await getData(params.category);
+  } catch (error) {
+    console.error("Error fetching category data:", error);
+  }
 
   return (
     <div className="bg-white py-16">
@@ -39,29 +43,33 @@ export default async function CategoryPage({
         </div>
 
         {/* Grid Container */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {data.map((product) => (
-            <div key={product._id} className="group rounded-lg p-4 border hover:shadow-lg transition">
-              <div className="aspect-square w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-90">
-                <Image
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="w-full h-full object-cover object-center"
-                  width={300}
-                  height={300}
-                />
-              </div>
+        {data.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {data.map((product) => (
+              <div key={product._id} className="group rounded-lg p-4 border hover:shadow-lg transition">
+                <div className="aspect-square w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-90">
+                  <Image
+                    src={product.imageUrl}
+                    alt={product.name}
+                    className="w-full h-full object-cover object-center"
+                    width={300}
+                    height={300}
+                  />
+                </div>
 
-              <div className="mt-4">
-                <h3 className="text-sm font-medium text-gray-700 hover:underline">
-                  <Link href={`/product/${product.slug}`}>{product.name}</Link>
-                </h3>
-                <p className="text-xs text-gray-500 mt-1">{product.categoryName}</p>
-                <p className="mt-2 text-lg font-semibold text-gray-900">EGP {product.price}</p>
+                <div className="mt-4">
+                  <h3 className="text-sm font-medium text-gray-700 hover:underline">
+                    <Link href={`/product/${product.slug}`}>{product.name}</Link>
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-1">{product.categoryName}</p>
+                  <p className="mt-2 text-lg font-semibold text-gray-900">EGP {product.price}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No products found in this category.</p>
+        )}
       </div>
     </div>
   );
