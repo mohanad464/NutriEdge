@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Head from "next/head";
 import CartProvider from "./components/Providers";
 import ShoppingCartModel from "./components/ShoppingCartModel";
+import Footer from "./components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,14 +58,15 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <CartProvider>
-          <Navbar />
-          <ShoppingCartModel />
-          {children}
-        </CartProvider>
-      </body>
+  className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+>
+  <CartProvider>
+    <Navbar />
+    <main className="mt-[80px]">{children}</main> {/* Push content down */}
+    <Footer />
+    <ShoppingCartModel />
+  </CartProvider>
+</body>
     </html>
   );
 }

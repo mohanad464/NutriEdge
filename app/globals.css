@@ -65,6 +65,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    padding-top: 80px; /* Adjust based on navbar height */
   }
 }
 

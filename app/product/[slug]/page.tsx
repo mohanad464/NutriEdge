@@ -7,22 +7,21 @@ import { Button } from "@/components/ui/button";
 import { Star, Truck } from "lucide-react";
 
 async function getData(slug: string) {
-  const query = `*[_type == "product" && slug.current == "${slug}"][0]{
-  _id,
+  const query = `*[_type == "product" && slug.current == $slug][0]{
+    _id,
     images,
     price,
     name,
     description,
     "slug": slug.current,
     "categoryName": category->name,
-    price_id,
+    price_id
+  }`;
 
-}`;
-
-  const data = await client.fetch(query);
-
+  const data = await client.fetch(query, { slug });
   return data;
 }
+
 export default async function ProductPage({
   params,
 }: {
@@ -33,70 +32,65 @@ export default async function ProductPage({
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-screen-xl px-4 md:px-8">
-        <div className="grid gap-8 md:grid-cols-2"></div>
-        <div>
+        <div className="grid gap-8 md:grid-cols-2">
+          {/* Left: Image Gallery */}
           <ImageGallery images={data.images} />
+
+          {/* Right: Product Info */}
           <div className="md:py-8">
-            <div className="mb-2 md:mb-3">
-              <span className="mb-0.5 inline-block text-gray-500">
-                {data.categoryName}
-              </span>
-              <h2 className="text-2xl font-bold text-gray-800 lg:text-3xl">
-                {data.name}
-              </h2>
+            {/* Category & Title */}
+            <div className="mb-4">
+              <span className="text-gray-500">{data.categoryName}</span>
+              <h2 className="text-3xl font-bold text-gray-900">{data.name}</h2>
             </div>
-            <div className="mb-6 flex items-center gap-3 md:mb-10">
-              <Button className="rounded-full gap-x-2">
+
+            {/* Ratings */}
+            <div className="mb-6 flex items-center gap-3">
+              <Button variant="secondary" className="rounded-full flex items-center gap-x-2">
                 <span className="text-sm">4.2</span>
-                <Star className="h-5 w-5 " />
+                <Star className="h-5 w-5 text-yellow-500" />
               </Button>
-
-              <span className="flex-sm text-gray-500 transition duration-100">
-                56 Ratings
-              </span>
+              <span className="text-gray-500">56 Ratings</span>
             </div>
+
+            {/* Pricing */}
             <div className="mb-4 flex items-end gap-2">
-              <span className="text-xl font-bold text-gray-800 md:text-2xl">
-                EGP {data.price}
-              </span>
-              <span className="mb-0.5 text-red-500 line-through">
-                EGP {data.price + 30}
-              </span>
+              <span className="text-2xl font-bold text-gray-800">EGP {data.price}</span>
+              <span className="text-red-500 line-through">EGP {data.price + 30}</span>
             </div>
-            <span className="text-sm text-gray-500">
-              Incl. VAT plus shipping
-            </span>
-          </div>
+            <span className="text-sm text-gray-500">Incl. VAT plus shipping</span>
 
-          <div className="mb-6 flex items-center gap-2 text-gray-500">
-            <Truck />
-            <span className="text-sm">Free Delivery</span>
-          </div>
+            {/* Delivery Info */}
+            <div className="my-6 flex items-center gap-2 text-gray-500">
+              <Truck />
+              <span className="text-sm">Free Delivery</span>
+            </div>
 
-          <div className="flex gap-2.5">
-            <AddToCart
-              currency="EGP"
-              name={data.name}
-              price={data.price}
-              description={data.description}
-              image={data.images[0]}
-              key={data._id}
-              price_id={data.price_id}
-            />
-            <Checkout
-              currency="EGP"
-              name={data.name}
-              price={data.price}
-              description={data.description}
-              image={data.images[0]}
-              key={data._id}
-              price_id={data.price_id}
-            />
-          </div>
+            {/* Buttons */}
+            <div className="flex gap-3">
+              <AddToCart
+                currency="EGP"
+                name={data.name}
+                price={data.price}
+                description={data.description}
+                image={data.images[0]}
+                key={data._id}
+                price_id={data.price_id}
+              />
+              <Checkout
+                currency="EGP"
+                name={data.name}
+                price={data.price}
+                description={data.description}
+                image={data.images[0]}
+                key={data._id}
+                price_id={data.price_id}
+              />
+            </div>
 
-          <p className="mt-12 text-base text-gray-500 tracking-wide">
-            {data.description}
-          </p>
+            {/* Description */}
+            <p className="mt-8 text-gray-500 leading-relaxed">{data.description}</p>
+          </div>
         </div>
       </div>
     </div>

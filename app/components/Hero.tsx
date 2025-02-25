@@ -10,48 +10,45 @@ async function getData() {
 
 export default async function Hero() {
   const data = await getData();
+
   return (
-    <section className="mx-auto max-w-2xl px-4 sm:pb-6 lg:max-w-7xl lg:px-8">
-      <div className="mb-8 flex flex-wrap justify-between md:mb-16">
+    <section className="mx-auto max-w-7xl px-6 lg:px-12">
+      <div className="flex flex-wrap items-center justify-between py-10 lg:py-20">
         {/* Left Text Content */}
-        <div className="mb-6 flex w-full flex-col justify-center sm:mb-12 lg:mb-0 lg:w-1/3 lg:pb-24 lg:pt-48">
-          <h1 className="mb-4 text-4xl font-bold text-black sm:text-5xl md:mb-8 md:text-6xl">
-            With NutriEdge, Trust is Our Priority
+        <div className="w-full lg:w-1/3 text-center lg:text-left">
+          <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight">
+            With NutriEdge, <br />
+            <span className="text-primary">Trust is Our Priority</span>
           </h1>
-          <p className="max-w-md leading-relaxed text-gray-500 xl:text-lg">
-            Welcome to NutriEdge, your go-to destination for premium health and
-            fitness supplements. We offer a wide range of high-quality products,
-            including protein powders, vitamins, pre-workouts, and wellness
-            essentials to help you achieve your fitness goals.
+          <p className="mt-4 text-lg text-gray-600">
+            Your go-to destination for premium health and fitness supplements.
+            We offer a wide range of top-quality protein powders, vitamins,
+            pre-workouts, and more to help you reach your goals.
           </p>
         </div>
 
-        {/* Right Images Container */}
-        <div className="relative flex w-full justify-center lg:w-2/3">
-          {/* Background (Larger Image) */}
-          <div className="w-2/3 overflow-hidden rounded-lg bg-gray-100 shadow-lg transform scale-100 transition duration-300 hover:scale-105">
+        {/* Right Images */}
+        <div className="relative flex w-full lg:w-2/3 justify-center">
+          {/* Background (Main Image) */}
+          <div className="relative w-3/4 lg:w-2/3 rounded-lg overflow-hidden shadow-xl transform transition duration-300 hover:scale-105">
             <Image
               src={urlFor(data.image2).url()}
               alt="Hero Image 2"
-              layout="responsive"
               width={600}
               height={500}
-              objectFit="cover"
-              className="rounded-lg"
+              className="rounded-lg object-cover"
               priority
             />
           </div>
 
-          {/* Foreground (Smaller Image) - Now Positioned Better */}
-          <div className="absolute -bottom-10 left-1/2 w-1/3 transform -translate-x-1/2 rounded-lg bg-white shadow-xl p-2">
+          {/* Foreground (Smaller Image) */}
+          <div className="absolute -bottom-10 left-1/2 w-40 md:w-48 lg:w-56 transform -translate-x-1/2 rounded-lg shadow-lg bg-white p-2">
             <Image
               src={urlFor(data.image1).url()}
               alt="Hero Image 1"
-              layout="responsive"
-              width={300}
-              height={300}
-              objectFit="cover"
-              className="rounded-lg"
+              width={250}
+              height={250}
+              className="rounded-lg object-cover"
               priority
             />
           </div>
@@ -59,31 +56,21 @@ export default async function Hero() {
       </div>
 
       {/* Category Links */}
-      <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
-        <div className="flex h-12 w-64 divide-x overflow-hidden rounded-lg border">
+      <div className="mt-10 flex flex-col md:flex-row items-center justify-center gap-6">
+        {[
+          { name: "Protein", href: "/Protein" },
+          { name: "Creatine", href: "/Creatine" },
+          { name: "Accessories", href: "/Accessories" },
+        ].map((category, idx) => (
           <Link
-            href="/Protein"
-            className="flex w-1/3 items-center justify-center text-gray-500 transition duration-200 hover:bg-gray-100 active:bg-gray-200"
+            key={idx}
+            href={category.href}
+            className="px-6 py-3 text-lg font-semibold text-gray-700 bg-white border rounded-lg shadow-md transition duration-200 hover:bg-gray-100 hover:scale-105"
           >
-            Protein
+            {category.name}
           </Link>
-
-          <Link
-            href="/Creatine"
-            className="flex w-1/3 items-center justify-center text-gray-500 transition duration-200 hover:bg-gray-100 active:bg-gray-200"
-          >
-            Creatine
-          </Link>
-
-          <Link
-            href="/Accessories"
-            className="flex w-1/3 items-center justify-center text-gray-500 transition duration-200 hover:bg-gray-100 active:bg-gray-200"
-          >
-            Accessories
-          </Link>
-        </div>
+        ))}
       </div>
     </section>
   );
 }
-
