@@ -12,9 +12,9 @@ export default function CartProvider({
       mode="payment"
       cartMode="client-only"
       stripe={process.env.NEXT_PUBLIC_STRIPE_KEY as string}
-      successUrl="http://https://nutri-edge.vercel.app//stripe/success"
-      cancelUrl="http://https://nutri-edge.vercel.app//stripe/error"
-      currency = "EGP"
+      successUrl="https://nutri-edge.vercel.app/stripe/success"
+      cancelUrl="https://nutri-edge.vercel.app/stripe/error"
+      currency="EGP"
       billingAddressCollection={false}
       shouldPersist={true}
       language="en-US"
